@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="google" content="notranslate">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calendario Vuelta al Cole · Septiembre 2026 · Salesianos Triana</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EFF1EA;
+    --paper-line:#DADFD3;
+    --ink:#1F2A3C;
+    --ink-soft:#5B6472;
+    --card:#FFFFFF;
+    --accent:#2F6F5E;
+    --accent-ink:#FFFFFF;
+    --infantil:#E2A63B;
+    --primaria:#4C8C6B;
+    --eso13:#3B6EA5;
+    --esobach:#A6414B;
+    --general:#8A7CA8;
+    --shadow: 0 1px 2px rgba(31,42,60,0.08), 0 4px 10px rgba(31,42,60,0.06);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    background-image:
+      linear-gradient(var(--paper-line) 1px, transparent 1px);
+    background-size: 100% 42px;
+    color:var(--ink);
+    font-family:"IBM Plex Sans", sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{font-family:"Zilla Slab", serif;}
+  .mono{font-family:"IBM Plex Mono", monospace;}
+
+  header.top{
+    padding: 22px 28px 14px;
+    display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:10px;
+    border-bottom: 2px solid var(--ink);
+  }
+  header.top .title h1{
+    margin:0; font-size:26px; font-weight:700; letter-spacing:.2px;
+  }
+  header.top .title p{
+    margin:2px 0 0; color:var(--ink-soft); font-size:13px;
+  }
+  header.top .actions{display:flex; gap:8px; flex-wrap:wrap;}
+  button{
+    font-family:"IBM Plex Sans", sans-serif; font-size:13px; font-weight:600;
+    border:1.5px solid var(--ink); background:var(--card); color:var(--ink);
+    padding:8px 13px; border-radius:6px; cursor:pointer;
+    transition: transform .08s ease, background .15s ease;
+  }
+  button:hover{background:var(--ink); color:#fff;}
+  button:active{transform:scale(.97);}
+  button.primary{background:var(--accent); color:var(--accent-ink); border-color:var(--accent);}
+  button.primary:hover{background:#255a4c;}
+  button.ghost{border-color:var(--paper-line); color:var(--ink-soft); background:transparent;}
+  button.ghost:hover{background:var(--ink); color:#fff;}
+
+  .layout{display:flex; align-items:flex-start; max-width:1180px; margin:0 auto; padding:20px 20px 60px;}
+
+  /* ---- Binder tabs (signature element) ---- */
+  nav.tabs{
+    display:flex; flex-direction:column; gap:7px; padding-right:6px; min-width:132px; position:sticky; top:16px;
+  }
+  nav.tabs .tab{
+    position:relative;
+    padding:9px 12px 9px 16px;
+    background:var(--card);
+    border:1.5px solid var(--ink);
+    border-right:none;
+    border-radius:8px 0 0 8px;
+    cursor:pointer;
+    box-shadow: var(--shadow);
+    transform: translateX(0px);
+    transition: transform .12s ease;
+  }
+  nav.tabs .tab:hover{transform: translateX(-4px);}
+  nav.tabs .tab.active{
+    transform: translateX(-10px);
+    background:var(--ink); color:#fff;
+  }
+  nav.tabs .tab .num{font-family:"Zilla Slab",serif; font-weight:700; font-size:19px; display:block;}
+  nav.tabs .tab .wd{font-size:10px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-soft);}
+  nav.tabs .tab.active .wd{color:#cfd6df;}
+  nav.tabs .tab .dot{
+    position:absolute; left:5px; top:50%; transform:translateY(-50%);
+    width:7px; height:7px; border-radius:50%;
+  }
+  .type-lectiva{background:var(--primaria);}
+  .type-mixta{background:#3B8C8C;}
+  .type-formacion{background:var(--eso13);}
+  .type-convivencia{background:var(--infantil);}
+  .type-evaluacion{background:var(--esobach);}
+
+  nav.tabs .legend{font-size:10.5px; color:var(--ink-soft); margin-top:8px; line-height:1.6; padding-left:2px;}
+  nav.tabs .legend span{display:inline-block; width:7px;height:7px;border-radius:50%; margin-right:5px;}
+
+  main{flex:1; min-width:0;}
+
+  .day-card{
+    background:var(--card); border:1.5px solid var(--ink); border-radius:10px;
+    box-shadow: var(--shadow); overflow:hidden; margin-bottom:18px;
+  }
+  .day-head{
+    padding:16px 20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;
+    border-bottom: 1.5px solid var(--ink);
+  }
+  .day-head h2{margin:0; font-size:22px;}
+  .day-head .sub{color:var(--ink-soft); font-size:12.5px; margin-top:2px;}
+  .banner{
+    margin:14px 20px 0; padding:10px 14px; border-radius:6px;
+    background:#FBF3E1; border:1.5px dashed var(--infantil); font-size:13.5px; font-weight:600;
+  }
+  .allday-banner{
+    margin:20px; padding:30px; text-align:center; border-radius:8px;
+    background:linear-gradient(135deg, var(--primaria), #3B8C8C); color:#fff;
+    font-family:"Zilla Slab",serif; font-size:24px; font-weight:700; letter-spacing:.03em;
+  }
+
+  table{width:100%; border-collapse:collapse; font-size:13px;}
+  thead th{
+    text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.05em;
+    color:#fff; padding:8px 12px; position:sticky; top:0;
+  }
+  th.col-hora{background:var(--ink); width:108px;}
+  th.col-infantil{background:var(--infantil);}
+  th.col-primaria{background:var(--primaria);}
+  th.col-eso13{background:var(--eso13);}
+  th.col-esobach{background:var(--esobach);}
+  th.col-notas{background:var(--general);}
+
+  tbody td{
+    border-top:1px solid var(--paper-line);
+    padding:9px 12px; vertical-align:top; line-height:1.42;
+  }
+  td.hora{font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:12px; color:var(--ink-soft); white-space:nowrap;}
+  td.celda{outline:none; min-width:130px;}
+  td.celda:focus{background:#FFF9E8; box-shadow: inset 0 0 0 1.5px var(--accent);}
+  td.celda.hit{background:#FFF1B8;}
+  td.celda[data-col="infantil"]{border-left:3px solid var(--infantil);}
+  td.celda[data-col="primaria"]{border-left:3px solid var(--primaria);}
+  td.celda[data-col="eso13"]{border-left:3px solid var(--eso13);}
+  td.celda[data-col="esobach"]{border-left:3px solid var(--esobach);}
+  td.celda[data-col="notas"]{border-left:3px solid var(--general); color:var(--ink-soft); font-style:italic;}
+
+  .col-hidden{display:none;}
+
+  .filterbar{
+    max-width:1180px; margin:0 auto; padding:0 20px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;
+  }
+  .filterbar input[type="search"]{
+    font-family:"IBM Plex Sans"; padding:8px 12px; border:1.5px solid var(--ink); border-radius:6px; font-size:13px; min-width:200px;
+  }
+  .chip{
+    padding:6px 12px; border-radius:20px; border:1.5px solid; font-size:12px; font-weight:600; cursor:pointer; background:#fff;
+  }
+  .chip[data-etapa="infantil"]{border-color:var(--infantil); color:var(--infantil);}
+  .chip[data-etapa="primaria"]{border-color:var(--primaria); color:var(--primaria);}
+  .chip[data-etapa="eso13"]{border-color:var(--eso13); color:var(--eso13);}
+  .chip[data-etapa="esobach"]{border-color:var(--esobach); color:var(--esobach);}
+  .chip[data-etapa="notas"]{border-color:var(--general); color:var(--general);}
+  .chip.off{opacity:.32;}
+
+  footer{max-width:1180px; margin:0 auto; padding:10px 20px 40px; color:var(--ink-soft); font-size:11.5px;}
+
+  @media (max-width:820px){
+    .layout{flex-direction:column;}
+    nav.tabs{flex-direction:row; overflow-x:auto; width:100%; position:static; padding-bottom:6px;}
+    nav.tabs .tab{border-radius:8px 8px 0 0; border-right:1.5px solid var(--ink); border-bottom:none; white-space:nowrap;}
+    nav.tabs .tab.active{transform:translateY(-4px);}
+    table{font-size:12px;}
+  }
+  @media print{
+    nav.tabs, header.top .actions, .filterbar{display:none;}
+    .day-card{page-break-inside:avoid; box-shadow:none;}
+    body{background:#fff;}
+  }
+
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(31,42,60,.55);
+    display:flex; align-items:center; justify-content:center; z-index:999;
+  }
+  .modal-overlay.hidden{display:none;}
+  .modal-box{
+    background:#fff; border:1.5px solid var(--ink); border-radius:10px;
+    padding:22px; width:min(360px, 90vw); box-shadow: var(--shadow);
+  }
+  .modal-box h3{margin:0 0 10px; font-size:18px;}
+  .modal-box p{font-size:13.5px; color:var(--ink-soft); margin:0 0 14px;}
+  .modal-box input[type="date"], .modal-box input[type="text"]{
+    width:100%; padding:9px 10px; font-family:"IBM Plex Sans"; font-size:14px;
+    border:1.5px solid var(--ink); border-radius:6px; margin-bottom:14px;
+  }
+  .modal-box .modal-actions{display:flex; justify-content:flex-end; gap:8px;}
+  .modal-box .err{color:var(--esobach); font-size:12px; margin:-8px 0 12px; display:none;}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="title">
+    <h1>📚 Vuelta al Cole · Septiembre 2026</h1>
+    <p>Salesianos Triana — Calendario del profesorado (editable). Toca cualquier celda para corregirla; se guarda sola.</p>
+  </div>
+  <div class="actions">
+    <button class="ghost" id="btnPrint">🖨️ Imprimir</button>
+    <button class="ghost" id="btnReset">↺ Restaurar original</button>
+    <button class="ghost" id="btnAddDay">➕ Añadir día</button>
+    <button class="primary" id="btnIcs">📅 Exportar a Google Calendar (.ics)</button>
+  </div>
+</header>
+
+<div class="filterbar" id="filterbar">
+  <input type="search" id="buscador" placeholder="Buscar (ej. 'programaciones', 'convivencia')...">
+  <span style="font-size:12px;color:var(--ink-soft);margin-right:2px;">Mostrar etapas:</span>
+  <button class="chip" data-etapa="infantil">Infantil</button>
+  <button class="chip" data-etapa="primaria">Primaria</button>
+  <button class="chip" data-etapa="eso13">1º–3º ESO</button>
+  <button class="chip" data-etapa="esobach">4º ESO / Bach / FP</button>
+  <button class="chip" data-etapa="notas">General</button>
+</div>
+
+<div class="layout">
+  <nav class="tabs" id="tabs"></nav>
+  <main id="main"></main>
+</div>
+
+<footer>
+  Transcrito a partir de "Calendario_Septiembre_26_v1". Algunas celdas del PDF original mezclaban texto de varias columnas — revísalas y corrígelas directamente aquí, quedan guardadas en este navegador. Usa "Exportar a Google Calendar" para subir los bloques de las etapas que tengas activas al filtro.
+</footer>
+
+<div class="modal-overlay hidden" id="modalOverlay">
+  <div class="modal-box" id="modalBox"></div>
+</div>
+
+<script>
+const ETAPAS = [
+  {key:'infantil', label:'Infantil'},
+  {key:'primaria', label:'Primaria'},
+  {key:'eso13', label:'1º–3º ESO'},
+  {key:'esobach', label:'4º ESO / Bach / FP'},
+  {key:'notas', label:'General'}
+];
+
+const DAYS = [
+  { date:'2026-09-01', weekday:'MARTES', type:'formacion', banner:'NO OLVIDAR — Presentación del lema, la campaña y el calendario del curso',
+    blocks:[
+      {time:'08:00 – 14:30', infantil:'Ex SEP', primaria:'Ex SEP', eso13:'Ex SEP', esobach:'Ex SEP', notas:''},
+      {time:'09:00 – 10:00', infantil:'Saludo, oración y presentación de la jornada. Presentación del lema y la campaña. Presentación del calendario.', primaria:'Saludo, oración y presentación de la jornada. Presentación del lema y la campaña. Presentación del calendario.', eso13:'Saludo, oración y presentación de la jornada. Presentación del lema y la campaña. Presentación del calendario.', esobach:'Saludo, oración y presentación de la jornada. Presentación del lema y la campaña. Presentación del calendario.', notas:'Presentación de las propuestas de mejora globales'},
+      {time:'10:00 – 11:00', infantil:'Calendario. Trabajo de las propuestas de mejora por etapas.', primaria:'Calendario. Trabajo de las propuestas de mejora por etapas.', eso13:'Calendario. Trabajo de las propuestas de mejora por etapas.', esobach:'Calendario. Trabajo de las propuestas de mejora por etapas.', notas:''},
+      {time:'11:00 – 11:30', infantil:'Acción Tutorial', primaria:'Acción Tutorial', eso13:'Acción Tutorial', esobach:'Acción Tutorial', notas:''},
+      {time:'11:30 – 13:00', infantil:'Gestión de la convivencia. Revisión de aulas, materiales...', primaria:'Gestión de la convivencia. Revisión de aulas, materiales...', eso13:'Gestión de la convivencia. Revisión de aulas, materiales...', esobach:'Gestión de la convivencia. Revisión de aulas, materiales... / Acción Docente / At. Diversidad', notas:''}
+    ]},
+  { date:'2026-09-02', weekday:'MIÉRCOLES', type:'formacion', banner:'Acción Pastoral / Tránsito — Objetivos de mejora y objetivos estratégicos',
+    blocks:[
+      {time:'08:00 – 14:30', infantil:'Ex SEP', primaria:'Ex SEP', eso13:'Ex SEP', esobach:'Ex SEP', notas:'Bilingüismo'},
+      {time:'09:00 – 09:20', infantil:'Comunicación', primaria:'Comunicación', eso13:'Comunicación', esobach:'Comunicación', notas:''},
+      {time:'09:20 – 11:00', infantil:'Acción Docente 1', primaria:'Acción Docente 1', eso13:'Acción Docente 1', esobach:'Acción Docente 1', notas:'FFEOE / Formación (11:00–11:30)'},
+      {time:'11:30 – 13:00', infantil:'Acción Docente 2', primaria:'Normativa - Trabajo personal', eso13:'Acción Docente 2', esobach:'Acción Docente 2', notas:'Comunicación / Nueva normativa'}
+    ]},
+  { date:'2026-09-03', weekday:'JUEVES', type:'formacion', banner:'Bilingüismo — Formación (09:00–09:20)',
+    blocks:[
+      {time:'09:00 – 11:00', infantil:'Tránsito INF–PRIM / Trabajo personal de programaciones', primaria:'Acción Docente 2', eso13:'Presentación configuración de grupos', esobach:'Presentación configuración de grupos', notas:'Acción tutorial (tutorías grupales, individuales, atención a familias)'},
+      {time:'11:30 – 13:00', infantil:'Acción Tutorial', primaria:'Trabajo personal programaciones', eso13:'Trabajo personal programaciones', esobach:'Trabajo personal programaciones · 13:00h Evaluación extraordinaria', notas:'FFEOE'}
+    ]},
+  { date:'2026-09-04', weekday:'VIERNES', type:'evaluacion', banner:'Entrega de calificaciones (08:00 – 14:30)',
+    blocks:[
+      {time:'09:00 – 11:00', infantil:'Entrevistas Infantil 3 años / Trabajo personal programaciones', primaria:'Coordinación vertical', eso13:'Trabajo personal programaciones (coordinación)', esobach:'Trabajo personal programaciones', notas:'Trabajo por etapas / Familias (criterios de programaciones)'},
+      {time:'11:30 – 13:00', infantil:'Entrevistas Infantil 3 años / Trabajo personal programaciones', primaria:'Acción tutorial', eso13:'Trabajo personal programaciones (coordinación)', esobach:'Atención a familias / Trabajo personal programaciones', notas:'Trabajo por etapas / Familias (textos FFEOE)'}
+    ]},
+  { date:'2026-09-07', weekday:'LUNES', type:'formacion', banner:'',
+    blocks:[
+      {time:'09:00 – 11:00', infantil:'Entrevistas Infantil 3 años / Trabajo personal programaciones', primaria:'Reunión Plan Lector y Razonamiento Matemático', eso13:'Acción Tutorial', esobach:'Trabajo personal programaciones', notas:'Trabajo por etapas / Familias'},
+      {time:'11:30 – 13:00', infantil:'Entrevistas Infantil 3 años / Trabajo personal programaciones', primaria:'Trabajo personal programaciones', eso13:'Trabajo personal programaciones (coordinación)', esobach:'Acción Tutorial', notas:'Trabajo por etapas / Familias'}
+    ]},
+  { date:'2026-09-08', weekday:'MARTES', type:'convivencia', allDay:'JORNADA DE CONVIVENCIA', blocks:[] },
+  { date:'2026-09-09', weekday:'MIÉRCOLES', type:'formacion', banner:'',
+    blocks:[
+      {time:'09:00 – 11:00', infantil:'Atención a la Diversidad', primaria:'Atención a la Diversidad', eso13:'Trabajo personal programaciones', esobach:'Trabajo personal programaciones', notas:'Trabajo personal programaciones'},
+      {time:'11:30 – 12:15', infantil:'Claustro de inicio de curso 26/27', primaria:'Claustro de inicio de curso 26/27', eso13:'Claustro de inicio de curso 26/27', esobach:'Claustro de inicio de curso 26/27', notas:'Claustro de inicio de curso 26/27'},
+      {time:'12:15 – 13:00', infantil:'Preparación de aulas / Trabajo personal programaciones', primaria:'Preparación de aulas / Trabajo personal programaciones', eso13:'Trabajo personal programaciones', esobach:'Trabajo personal programaciones', notas:'Trabajo personal programaciones'}
+    ]},
+  { date:'2026-09-10', weekday:'JUEVES', type:'mixta', banner:'Encuentro con el Regional (14:00–14:30)',
+    blocks:[
+      {time:'09:00 – 14:00', infantil:'JORNADA LECTIVA', primaria:'JORNADA LECTIVA', eso13:'Trabajo personal programaciones', esobach:'Trabajo personal programaciones', notas:'Trabajo personal programaciones'},
+      {time:'11:30 – 13:00', infantil:'(continúa jornada lectiva)', primaria:'(continúa jornada lectiva)', eso13:'Trabajo personal programaciones', esobach:'Trabajo personal programaciones', notas:'Trabajo personal programaciones'}
+    ]},
+  { date:'2026-09-11', weekday:'VIERNES', type:'mixta', banner:'',
+    blocks:[
+      {time:'09:00 – 14:00', infantil:'JORNADA LECTIVA', primaria:'JORNADA LECTIVA', eso13:'Trabajo personal programaciones', esobach:'Trabajo personal programaciones', notas:'Atención a la Diversidad'},
+      {time:'11:30 – 13:00', infantil:'(continúa jornada lectiva)', primaria:'(continúa jornada lectiva)', eso13:'Trabajo personal programaciones', esobach:'Trabajo personal programaciones', notas:'Trabajo personal programaciones'}
+    ]},
+  { date:'2026-09-14', weekday:'LUNES', type:'mixta', banner:'',
+    blocks:[
+      {time:'09:00 – 14:00', infantil:'JORNADA LECTIVA', primaria:'JORNADA LECTIVA', eso13:'Atención a la Diversidad', esobach:'Atención a la Diversidad', notas:'Trabajo personal programaciones'},
+      {time:'11:30 – 13:00', infantil:'Preparación de aulas / Trabajo personal programaciones', primaria:'Preparación de aulas / Trabajo personal programaciones', eso13:'', esobach:'', notas:'Preparación de aulas / Trabajo personal programaciones'}
+    ]},
+  { date:'2026-09-15', weekday:'MARTES', type:'lectiva', banner:'Comienza la jornada lectiva completa en todas las etapas',
+    blocks:[
+      {time:'08:00/09:00 – 14:30', infantil:'JORNADA LECTIVA (09:00–14:00)', primaria:'JORNADA LECTIVA (09:00–14:00)', eso13:'JORNADA LECTIVA (08:00–14:30)', esobach:'JORNADA LECTIVA (08:00–14:30)', notas:'FP: JORNADA LECTIVA (08:00–14:30)'}
+    ]}
+];
+
+const TYPE_LABEL = {
+  lectiva:'Jornada lectiva', mixta:'Inicio escalonado', formacion:'Formación / reuniones',
+  convivencia:'Convivencia', evaluacion:'Evaluación'
+};
+
+const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+
+const memoryStore = {};
+const safeStorage = {
+  getItem(k){ try{ return localStorage.getItem(k); }catch(e){ return (k in memoryStore) ? memoryStore[k] : null; } },
+  setItem(k,v){ try{ localStorage.setItem(k,v); }catch(e){ memoryStore[k] = v; } },
+  removeItem(k){ try{ localStorage.removeItem(k); }catch(e){ delete memoryStore[k]; } }
+};
+
+let overrides = JSON.parse(safeStorage.getItem('cal_sep26_overrides') || '{}');
+let customDays = JSON.parse(safeStorage.getItem('cal_sep26_customdays') || '[]');
+let activeDate = DAYS[0].date;
+let activeEtapas = new Set(ETAPAS.map(e=>e.key));
+
+const WEEKDAYS_ES = ['DOMINGO','LUNES','MARTES','MIÉRCOLES','JUEVES','VIERNES','SÁBADO'];
+
+function getAllDays(){
+  return DAYS.concat(customDays).slice().sort((a,b)=> a.date.localeCompare(b.date));
+}
+function saveCustomDays(){
+  safeStorage.setItem('cal_sep26_customdays', JSON.stringify(customDays));
+}
+function closeModal(){
+  document.getElementById('modalOverlay').classList.add('hidden');
+  document.getElementById('modalBox').innerHTML = '';
+}
+function openConfirmModal(title, text, confirmLabel, onConfirm){
+  const box = document.getElementById('modalBox');
+  box.innerHTML = `<h3>${title}</h3><p>${text}</p>
+    <div class="modal-actions">
+      <button class="ghost" id="modalCancel">Cancelar</button>
+      <button class="primary" id="modalOk">${confirmLabel}</button>
+    </div>`;
+  document.getElementById('modalOverlay').classList.remove('hidden');
+  document.getElementById('modalCancel').onclick = closeModal;
+  document.getElementById('modalOk').onclick = ()=>{ closeModal(); onConfirm(); };
+}
+function openDateModal(title, text, onSubmit){
+  const box = document.getElementById('modalBox');
+  box.innerHTML = `<h3>${title}</h3><p>${text}</p>
+    <input type="date" id="modalDateInput" min="2026-01-01" max="2026-12-31" value="2026-09-16">
+    <div class="err" id="modalErr">Ya existe un día con esa fecha.</div>
+    <div class="modal-actions">
+      <button class="ghost" id="modalCancel">Cancelar</button>
+      <button class="primary" id="modalOk">Añadir</button>
+    </div>`;
+  document.getElementById('modalOverlay').classList.remove('hidden');
+  document.getElementById('modalCancel').onclick = closeModal;
+  document.getElementById('modalOk').onclick = ()=>{
+    const val = document.getElementById('modalDateInput').value;
+    if(!val) return;
+    const ok = onSubmit(val);
+    if(ok!==false) closeModal();
+    else document.getElementById('modalErr').style.display = 'block';
+  };
+}
+
+function addDay(){
+  openDateModal('Añadir día', 'Elige la fecha del nuevo día que quieres meter en el calendario.', (clean)=>{
+    if(getAllDays().some(d=>d.date===clean)){ activeDate = clean; render(); return false; }
+    const wd = WEEKDAYS_ES[new Date(clean+'T12:00:00').getDay()];
+    const newDay = {
+      date: clean, weekday: wd, type:'formacion', banner:'', isCustom:true,
+      blocks:[ {time:'09:00 – 14:00', infantil:'', primaria:'', eso13:'', esobach:'', notas:''} ]
+    };
+    customDays.push(newDay);
+    saveCustomDays();
+    activeDate = clean;
+    render();
+    return true;
+  });
+}
+function deleteDay(dateStr){
+  openConfirmModal('Eliminar día', '¿Seguro que quieres eliminar este día añadido? No se puede deshacer.', 'Eliminar', ()=>{
+    customDays = customDays.filter(d=>d.date!==dateStr);
+    saveCustomDays();
+    activeDate = getAllDays()[0].date;
+    render();
+  });
+}
+function addBlock(dateStr){
+  const day = customDays.find(d=>d.date===dateStr);
+  if(!day) return;
+  day.blocks.push({time:'— : — – — : —', infantil:'', primaria:'', eso13:'', esobach:'', notas:''});
+  saveCustomDays();
+  renderDay();
+}
+
+function cellValue(day, blockIdx, col, fallback){
+  const k = day.date+'|'+blockIdx+'|'+col;
+  return overrides.hasOwnProperty(k) ? overrides[k] : (fallback||'');
+}
+function setCellValue(day, blockIdx, col, val){
+  const k = day.date+'|'+blockIdx+'|'+col;
+  overrides[k] = val;
+  safeStorage.setItem('cal_sep26_overrides', JSON.stringify(overrides));
+}
+
+function renderTabs(){
+  const nav = document.getElementById('tabs');
+  nav.innerHTML = '';
+  getAllDays().forEach(d=>{
+    const div = document.createElement('div');
+    div.className = 'tab' + (d.date===activeDate ? ' active':'');
+    const dayNum = d.date.slice(-2);
+    div.innerHTML = `<span class="dot type-${d.type}"></span><span class="num">${dayNum}${d.isCustom?'*':''}</span><span class="wd">${d.weekday.slice(0,3)}</span>`;
+    div.onclick = ()=>{ activeDate=d.date; render(); };
+    nav.appendChild(div);
+  });
+  const addBtn = document.createElement('div');
+  addBtn.className = 'tab';
+  addBtn.style.textAlign = 'center';
+  addBtn.style.color = 'var(--accent)';
+  addBtn.innerHTML = `<span class="num" style="font-size:19px;">＋</span><span class="wd">día</span>`;
+  addBtn.onclick = addDay;
+  nav.appendChild(addBtn);
+  const legend = document.createElement('div');
+  legend.className='legend';
+  legend.innerHTML = Object.entries(TYPE_LABEL).map(([k,v])=>`<div><span class="type-${k}" style="display:inline-block"></span>${v}</div>`).join('') + '<div style="margin-top:4px;">* añadido por ti</div>';
+  nav.appendChild(legend);
+}
+
+function renderDay(){
+  const day = getAllDays().find(d=>d.date===activeDate);
+  const main = document.getElementById('main');
+  const [y,m,dd] = day.date.split('-');
+  const fecha = `${parseInt(dd)} de ${MESES[parseInt(m)-1]||('mes '+m)} de ${y}`;
+
+  let html = `<div class="day-card">
+    <div class="day-head">
+      <div><h2>${day.weekday}, ${parseInt(dd)}${day.isCustom?' (añadido)':''}</h2><div class="sub">${fecha} · ${TYPE_LABEL[day.type]||''}</div></div>
+      ${day.isCustom ? `<div style="display:flex;gap:6px;"><button class="ghost" id="btnAddBlock">➕ Franja horaria</button><button class="ghost" id="btnDelDay">🗑️ Eliminar día</button></div>` : ''}
+    </div>`;
+
+  if(day.allDay){
+    html += `<div class="allday-banner">${day.allDay}</div>`;
+  } else {
+    if(day.banner){ html += `<div class="banner">${day.banner}</div>`; }
+    html += `<div style="overflow-x:auto;"><table><thead><tr>
+      <th class="col-hora">Hora</th>
+      <th class="col-infantil ${activeEtapas.has('infantil')?'':'col-hidden'}">Infantil</th>
+      <th class="col-primaria ${activeEtapas.has('primaria')?'':'col-hidden'}">Primaria</th>
+      <th class="col-eso13 ${activeEtapas.has('eso13')?'':'col-hidden'}">1º–3º ESO</th>
+      <th class="col-esobach ${activeEtapas.has('esobach')?'':'col-hidden'}">4º ESO / Bach / FP</th>
+      <th class="col-notas ${activeEtapas.has('notas')?'':'col-hidden'}">General</th>
+    </tr></thead><tbody>`;
+
+    day.blocks.forEach((b, idx)=>{
+      html += `<tr><td class="hora">${b.time}</td>`;
+      ETAPAS.forEach(e=>{
+        const val = cellValue(day, idx, e.key, b[e.key]);
+        const hidden = activeEtapas.has(e.key) ? '' : 'col-hidden';
+        html += `<td class="celda ${hidden}" data-col="${e.key}" data-date="${day.date}" data-idx="${idx}" contenteditable="true">${val}</td>`;
+      });
+      html += `</tr>`;
+    });
+    html += `</tbody></table></div>`;
+  }
+  html += `</div>`;
+  main.innerHTML = html;
+
+  main.querySelectorAll('.celda').forEach(td=>{
+    td.addEventListener('blur', ()=>{
+      setCellValue({date:td.dataset.date}, td.dataset.idx, td.dataset.col, td.innerText.trim());
+    });
+  });
+
+  const btnAddBlock = document.getElementById('btnAddBlock');
+  if(btnAddBlock) btnAddBlock.onclick = ()=>addBlock(day.date);
+  const btnDelDay = document.getElementById('btnDelDay');
+  if(btnDelDay) btnDelDay.onclick = ()=>deleteDay(day.date);
+}
+
+function render(){ renderTabs(); renderDay(); }
+
+document.getElementById('btnReset').onclick = ()=>{
+  openConfirmModal('Restaurar original', 'Se restaurarán las celdas de los días originales del PDF a su contenido de partida. Se perderán tus ediciones (los días que hayas añadido tú no se tocan).', 'Restaurar', ()=>{
+    overrides = {};
+    safeStorage.removeItem('cal_sep26_overrides');
+    render();
+  });
+};
+document.getElementById('btnPrint').onclick = ()=>window.print();
+document.getElementById('btnAddDay').onclick = addDay;
+
+document.querySelectorAll('.chip').forEach(chip=>{
+  chip.classList.remove('off');
+  chip.onclick = ()=>{
+    const e = chip.dataset.etapa;
+    if(activeEtapas.has(e)){ activeEtapas.delete(e); chip.classList.add('off'); }
+    else { activeEtapas.add(e); chip.classList.remove('off'); }
+    renderDay();
+  };
+});
+
+document.getElementById('buscador').addEventListener('input', (ev)=>{
+  const q = ev.target.value.trim().toLowerCase();
+  document.querySelectorAll('.celda').forEach(td=>td.classList.remove('hit'));
+  if(!q) return;
+  document.querySelectorAll('.celda').forEach(td=>{
+    if(td.innerText.toLowerCase().includes(q)) td.classList.add('hit');
+  });
+});
+
+function pad(n){ return n.toString().padStart(2,'0'); }
+function icsEscape(s){ return (s||'').replace(/([,;])/g,'\\$1').replace(/\n/g,'\\n'); }
+
+document.getElementById('btnIcs').onclick = ()=>{
+  const lines = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Salesianos Triana//Calendario Sept 2026//ES'];
+  const now = new Date();
+  const stamp = now.getFullYear()+pad(now.getMonth()+1)+pad(now.getDate())+'T'+pad(now.getHours())+pad(now.getMinutes())+pad(now.getSeconds());
+  let count = 0;
+
+  getAllDays().forEach(day=>{
+    if(day.allDay && activeEtapas.size){
+      const dstr = day.date.replace(/-/g,'');
+      const next = new Date(day.date); next.setDate(next.getDate()+1);
+      const dstr2 = next.getFullYear()+pad(next.getMonth()+1)+pad(next.getDate());
+      lines.push('BEGIN:VEVENT','UID:'+day.date+'-allday@salesianos-triana','DTSTAMP:'+stamp,
+        'DTSTART;VALUE=DATE:'+dstr,'DTEND;VALUE=DATE:'+dstr2,
+        'SUMMARY:'+icsEscape(day.allDay),'END:VEVENT');
+      count++;
+      return;
+    }
+    day.blocks.forEach((b, idx)=>{
+      ETAPAS.forEach(e=>{
+        if(!activeEtapas.has(e.key)) return;
+        const val = cellValue(day, idx, e.key, b[e.key]);
+        if(!val) return;
+        const times = b.time.match(/(\d{1,2}:\d{2})/g);
+        if(!times || times.length<2) return;
+        const [h1,m1] = times[0].split(':'); const [h2,m2] = times[times.length-1].split(':');
+        const dstr = day.date.replace(/-/g,'');
+        lines.push('BEGIN:VEVENT',
+          'UID:'+day.date+'-'+idx+'-'+e.key+'@salesianos-triana',
+          'DTSTAMP:'+stamp,
+          'DTSTART:'+dstr+'T'+pad(h1)+pad(m1)+'00',
+          'DTEND:'+dstr+'T'+pad(h2)+pad(m2)+'00',
+          'SUMMARY:'+icsEscape('['+e.label+'] '+val.slice(0,80)),
+          'DESCRIPTION:'+icsEscape(val),
+          'END:VEVENT');
+        count++;
+      });
+    });
+  });
+
+  lines.push('END:VCALENDAR');
+  if(count===0){
+    openConfirmModal('Nada que exportar', 'No hay eventos para exportar con el filtro de etapas actual. Activa alguna etapa en los chips de arriba e inténtalo de nuevo.', 'Entendido', ()=>{});
+    return;
+  }
+
+  const icsText = lines.join('\r\n');
+  let downloadWorked = false;
+  try{
+    const blob = new Blob([icsText], {type:'text/calendar'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'calendario-septiembre-2026-salesianos-triana.ics';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    downloadWorked = true;
+  }catch(err){
+    downloadWorked = false;
+  }
+
+  const box = document.getElementById('modalBox');
+  box.innerHTML = `<h3>${downloadWorked ? 'Archivo generado' : 'Descarga bloqueada aquí'}</h3>
+    <p>${downloadWorked
+      ? 'Si la descarga no ha saltado (algunos navegadores/vistas previas la bloquean), copia el contenido de abajo y guárdalo tú mismo en un archivo con extensión <strong>.ics</strong>, luego impórtalo en Google Calendar.'
+      : 'Esta vista previa no permite descargar archivos directamente. Copia el contenido de abajo, pégalo en un editor de texto y guárdalo como <strong>calendario.ics</strong>. Luego, en Google Calendar → Configuración → Importar y exportar, sube ese archivo. (Cuando lo uses ya subido a GitHub Pages, la descarga debería funcionar sola.)'}</p>
+    <textarea id="icsTextarea" readonly style="width:100%;height:140px;font-family:'IBM Plex Mono',monospace;font-size:11px;padding:8px;border:1.5px solid var(--ink);border-radius:6px;margin-bottom:14px;">${icsText}</textarea>
+    <div class="modal-actions">
+      <button class="ghost" id="modalCancel">Cerrar</button>
+      <button class="primary" id="modalCopy">📋 Copiar contenido</button>
+    </div>`;
+  document.getElementById('modalOverlay').classList.remove('hidden');
+  document.getElementById('modalCancel').onclick = closeModal;
+  document.getElementById('modalCopy').onclick = ()=>{
+    const ta = document.getElementById('icsTextarea');
+    ta.select();
+    try{ document.execCommand('copy'); }catch(e){}
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(icsText).catch(()=>{});
+    }
+    document.getElementById('modalCopy').textContent = '✅ Copiado';
+    setTimeout(()=>{ document.getElementById('modalCopy').textContent = '📋 Copiar contenido'; }, 1800);
+  };
+};
+
+render();
+</script>
+</body>
+</html>
