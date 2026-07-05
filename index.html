@@ -213,6 +213,7 @@
     <button class="ghost" id="btnReset">↺ Restaurar original</button>
     <button class="ghost" id="btnAddDay">➕ Añadir día</button>
     <button class="primary" id="btnIcs">📅 Exportar a Google Calendar (.ics)</button>
+    <button class="primary" id="btnCsv" style="background:var(--eso13); border-color:var(--eso13);">📊 Exportar a CSV/Excel</button>
   </div>
 </header>
 
@@ -598,6 +599,68 @@ document.getElementById('btnIcs').onclick = ()=>{
     try{ document.execCommand('copy'); }catch(e){}
     if(navigator.clipboard && navigator.clipboard.writeText){
       navigator.clipboard.writeText(icsText).catch(()=>{});
+    }
+    document.getElementById('modalCopy').textContent = '✅ Copiado';
+    setTimeout(()=>{ document.getElementById('modalCopy').textContent = '📋 Copiar contenido'; }, 1800);
+  };
+};
+
+document.getElementById('btnCsv').onclick = ()=>{
+  function csvField(s){
+    s = (s==null?'':String(s));
+    if(/[",;\n]/.test(s)) s = '"' + s.replace(/"/g,'""') + '"';
+    return s;
+  }
+  const rows = [['Fecha','Día','Tipo de jornada','Hora','Etapa','Actividad']];
+  getAllDays().forEach(day=>{
+    if(day.allDay){
+      rows.push([day.date, day.weekday, TYPE_LABEL[day.type]||'', 'Todo el día', 'Todas las etapas', day.allDay]);
+      return;
+    }
+    if(day.banner){
+      rows.push([day.date, day.weekday, TYPE_LABEL[day.type]||'', '', 'Aviso', day.banner]);
+    }
+    day.blocks.forEach((b, idx)=>{
+      ETAPAS.forEach(e=>{
+        const val = cellValue(day, idx, e.key, b[e.key]);
+        if(!val) return;
+        rows.push([day.date, day.weekday, TYPE_LABEL[day.type]||'', b.time, e.label, val]);
+      });
+    });
+  });
+
+  const csvText = '\uFEFF' + rows.map(r=>r.map(csvField).join(';')).join('\r\n');
+  let downloadWorked = false;
+  try{
+    const blob = new Blob([csvText], {type:'text/csv;charset=utf-8;'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'calendario-septiembre-2026-salesianos-triana.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    downloadWorked = true;
+  }catch(err){ downloadWorked = false; }
+
+  const box = document.getElementById('modalBox');
+  box.innerHTML = `<h3>${downloadWorked ? 'CSV generado' : 'Descarga bloqueada aquí'}</h3>
+    <p>${downloadWorked
+      ? 'Si la descarga no ha saltado, copia el contenido de abajo y guárdalo en un archivo con extensión <strong>.csv</strong>. Se abre directo con Excel o Google Sheets (columnas separadas por ";").'
+      : 'Esta vista previa no permite descargar archivos. Copia el contenido de abajo, pégalo en un editor de texto y guárdalo como <strong>calendario.csv</strong>. Al abrirlo en Excel, elige separador ";". (En GitHub Pages la descarga funcionará sola.)'}</p>
+    <textarea id="csvTextarea" readonly style="width:100%;height:140px;font-family:'IBM Plex Mono',monospace;font-size:11px;padding:8px;border:1.5px solid var(--ink);border-radius:6px;margin-bottom:14px;">${csvText}</textarea>
+    <div class="modal-actions">
+      <button class="ghost" id="modalCancel">Cerrar</button>
+      <button class="primary" id="modalCopy">📋 Copiar contenido</button>
+    </div>`;
+  document.getElementById('modalOverlay').classList.remove('hidden');
+  document.getElementById('modalCancel').onclick = closeModal;
+  document.getElementById('modalCopy').onclick = ()=>{
+    const ta = document.getElementById('csvTextarea');
+    ta.select();
+    try{ document.execCommand('copy'); }catch(e){}
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(csvText).catch(()=>{});
     }
     document.getElementById('modalCopy').textContent = '✅ Copiado';
     setTimeout(()=>{ document.getElementById('modalCopy').textContent = '📋 Copiar contenido'; }, 1800);
